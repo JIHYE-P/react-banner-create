@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Input from './Input'
 
 const StyledFormControl = styled.div`
   display: inline-block;
   margin: 0 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.35);
   span {
     display: inline-block;
     padding: 11px 15px;
+    height: 40px;
     font-size: 15px;
     color: #333;
     vertical-align: middle;
