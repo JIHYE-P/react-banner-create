@@ -38,13 +38,12 @@ const App = () => {
 
   const handleFontTheme = ({target}) => {
     setFontTheme(prev => ({...prev, [target.name]: target.value}))
-    console.log(fontTheme)
   }
 
   const {width, height} = sizeValue
   const placeholder = 'typing text here 👍'
 
-  return <section>
+  return <section style={{textAlign: 'center'}}>
     <StyledBannerSizeField>
       <SizeField sizeValue={sizeValue} onChange={handleSizeChange} />
     </StyledBannerSizeField>
