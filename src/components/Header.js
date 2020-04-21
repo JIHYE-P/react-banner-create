@@ -8,8 +8,7 @@ const StyledHeader = styled.div`
   width: 100%;
   padding: 20px;
   display: flex;
-  align-content: center;
-  justify-content: center;
+  align-items: center;
   background-color: rgba(0,0,0,0.45);
   color: #f8f8f8;
   h1 {
@@ -23,7 +22,7 @@ const StyledHeader = styled.div`
 
 const Header = () => {
   return  <StyledHeader>
-    <h1>Banner Create</h1>
+    <h1>Banner</h1>
     <span>By JIHYE</span>
   </StyledHeader>
 }
