@@ -13,6 +13,7 @@ body {
   font-family: 'Arial', sans-serif;
   font-size: 14px;
   background-color: #464646;
+  min-width: 700px;
 }
 
 #root {
