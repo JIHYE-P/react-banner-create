@@ -24,10 +24,10 @@ export const fontSizeList = [20, 30, 40, 50, 60, 70, 80, 90, 100, 120]
 // 16777215 === ffffff
 export const randomHexColor = () => `${Math.floor(Math.random() * 16777215).toString(16)}`
 
-export const getContrast = (color) => {
-  const r = parseInt(color.substr(0, 2), 16)
-  const g = parseInt(color.substr(2, 2), 16)
-  const b = parseInt(color.substr(4, 2), 16)
+export const getContrast = (hexColor) => {
+  const r = parseInt(hexColor.substring(0, 2), 16)
+  const g = parseInt(hexColor.substring(2, 2), 16)
+  const b = parseInt(hexColor.substring(4, 2), 16)
   const yiq = (r * 299 + g * 587 + b * 114) / 1000
   return yiq >= 220 ? '#000000' : '#ffffff'
 }
