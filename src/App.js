@@ -6,11 +6,14 @@ import Preview from './components/Preview';
 import TextField from './components/TextField';
 import FontEditor from './components/FontEditor';
 import ColorPicker from './components/ColorPicker';
-import { faFillDrip, faFont } from '@fortawesome/free-solid-svg-icons'
-import { ChromePicker } from 'react-color'
-import { randomHexColor, getContrast } from './utils';
+import ImageUpload from './components/ImageUpload';
 import Header from './components/Header';
 import DownloadButton from './components/DownloadButton';
+
+import { faFillDrip, faFont } from '@fortawesome/free-solid-svg-icons'
+import { ChromePicker } from 'react-color'
+
+import { randomHexColor, getContrast } from './utils';
 
 const StyledBannerSizeField = styled.div`
   text-align: center;
@@ -47,6 +50,7 @@ const App = () => {
   const [bgColor, setBgColor] = useState({displayColorPicker: false, color: '#000000'})
   const [textColor, setTextColor] = useState({displayColorPicker: false, color: '#ffffff'})
   const [href, setHref] = useState('')
+  const [bgImage, setBgImage] = useState({state: false, src: null})
 
   useEffect(() => {
     const bgColorHex = randomHexColor()
@@ -83,6 +87,7 @@ const App = () => {
     setFontTheme({...fontTheme, color: color.hex})
   }
   const handleUpdatePreview = (href) => setHref(href)
+  const handleUpdateImageSrc = (src) => setBgImage({state: true, src: src})
 
   const placeholder = 'typing text here :)'
   return <>
@@ -100,6 +105,8 @@ const App = () => {
           fontTheme={fontTheme} 
           href={href}
           updatePreview={handleUpdatePreview}
+          bgImage={bgImage.state}
+          bgImageSrc={bgImage.src}
         />
       </StyledBannerPreview>
       <StyledBannerTextField>
@@ -130,6 +137,8 @@ const App = () => {
           displayColorPicker={textColor.displayColorPicker}
           colorPicker={<ChromePicker color={textColor.color} onChange={handleTextColor} disableAlpha={true} />}
         />
+        <ImageUpload updateImageSrc={handleUpdateImageSrc} />
+
       </StyledColorEditor>
       <StyledBannerDownLoad>
         <DownloadButton href={href} />

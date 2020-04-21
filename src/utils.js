@@ -31,3 +31,16 @@ export const getContrast = (hexColor) => {
   const yiq = (r * 299 + g * 587 + b * 114) / 1000
   return yiq >= 220 ? '#000000' : '#ffffff'
 }
+
+export const fileTypes = [
+  'image/jpeg',
+  'image/png',
+  'image/jpg',
+]
+
+export const validFileType = file => fileTypes.includes(file.type)
+
+export const drawCanvasImage = (canvas, ctx, img) => {
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+  ctx.globalAlpha = 0.4;
+} 
