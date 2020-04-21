@@ -10,6 +10,7 @@ import { faFillDrip, faFont } from '@fortawesome/free-solid-svg-icons'
 import { ChromePicker } from 'react-color'
 import { randomHexColor, getContrast } from './utils';
 import Header from './components/Header';
+import DownloadButton from './components/DownloadButton';
 
 const StyledBannerSizeField = styled.div`
   text-align: center;
@@ -35,6 +36,9 @@ const StyledColorEditor = styled.div`
     margin: 0 20px;
   }
 `
+const StyledBannerDownLoad = styled.div`
+  margin-top: 30px;
+`
 
 const App = () => {
   const [sizeValue, setSizeValue] = useState({width: '700', height: '350'})
@@ -42,6 +46,8 @@ const App = () => {
   const [text, setText] = useState('Sample Banner')
   const [bgColor, setBgColor] = useState({displayColorPicker: false, color: '#000000'})
   const [textColor, setTextColor] = useState({displayColorPicker: false, color: '#ffffff'})
+  const [href, setHref] = useState('')
+
   useEffect(() => {
     const bgColorHex = randomHexColor()
     const textColorHex = getContrast(bgColorHex)
@@ -76,46 +82,60 @@ const App = () => {
     setTextColor({...textColor, color: color.hex})
     setFontTheme({...fontTheme, color: color.hex})
   }
+  const handleUpdatePreview = (href) => setHref(href)
 
   const placeholder = 'typing text here :)'
-  return <section style={{textAlign: 'center'}}>
+  return <>
     <Header></Header>
-    <StyledBannerSizeField>
-      <SizeField sizeValue={sizeValue} onChange={handleSizeChange} />
-    </StyledBannerSizeField>
-    <StyledBannerPreview>
-      <Preview width={sizeValue.width} height={sizeValue.height} backgroundColor={bgColor.color} text={text} fontTheme={fontTheme} />
-    </StyledBannerPreview>
-    <StyledBannerTextField>
-      <TextField 
-        placeholder={placeholder}
-        onChange={handleTextChange} 
-        onFocus={({target}) => target.placeholder = ''} 
-        onBlur={({target}) => (target.value === '') && (target.placeholder = placeholder)} 
-      />
-    </StyledBannerTextField>
-    <StyledFontEditor>
-      <FontEditor onChange={handleFontTheme} />
-    </StyledFontEditor>
-    <StyledColorEditor>
-      <ColorPicker 
-        onOpen={handleBgColorOpen}
-        onClose={handleBgColorClose}
-        color={bgColor.color}
-        icon={faFillDrip}
-        displayColorPicker={bgColor.displayColorPicker}
-        colorPicker={<ChromePicker color={bgColor.color} onChange={handleBgColor} disableAlpha={true} />}
-      />
-      <ColorPicker 
-        onOpen={handleTextColorOpen}
-        onClose={handleTextColorClose}
-        color={textColor.color}
-        icon={faFont}
-        displayColorPicker={textColor.displayColorPicker}
-        colorPicker={<ChromePicker color={textColor.color} onChange={handleTextColor} disableAlpha={true} />}
-      />
-    </StyledColorEditor>
-  </section>
+    <section style={{textAlign: 'center'}}>
+      <StyledBannerSizeField>
+        <SizeField sizeValue={sizeValue} onChange={handleSizeChange} />
+      </StyledBannerSizeField>
+      <StyledBannerPreview>
+        <Preview
+          width={sizeValue.width}
+          height={sizeValue.height}
+          backgroundColor={bgColor.color}
+          text={text}
+          fontTheme={fontTheme} 
+          href={href}
+          updatePreview={handleUpdatePreview}
+        />
+      </StyledBannerPreview>
+      <StyledBannerTextField>
+        <TextField 
+          placeholder={placeholder}
+          onChange={handleTextChange} 
+          onFocus={({target}) => target.placeholder = ''} 
+          onBlur={({target}) => (target.value === '') && (target.placeholder = placeholder)} 
+        />
+      </StyledBannerTextField>
+      <StyledFontEditor>
+        <FontEditor onChange={handleFontTheme} />
+      </StyledFontEditor>
+      <StyledColorEditor>
+        <ColorPicker 
+          onOpen={handleBgColorOpen}
+          onClose={handleBgColorClose}
+          color={bgColor.color}
+          icon={faFillDrip}
+          displayColorPicker={bgColor.displayColorPicker}
+          colorPicker={<ChromePicker color={bgColor.color} onChange={handleBgColor} disableAlpha={true} />}
+        />
+        <ColorPicker 
+          onOpen={handleTextColorOpen}
+          onClose={handleTextColorClose}
+          color={textColor.color}
+          icon={faFont}
+          displayColorPicker={textColor.displayColorPicker}
+          colorPicker={<ChromePicker color={textColor.color} onChange={handleTextColor} disableAlpha={true} />}
+        />
+      </StyledColorEditor>
+      <StyledBannerDownLoad>
+        <DownloadButton href={href} />
+      </StyledBannerDownLoad>
+    </section>
+  </>
 }
 
 export default App;

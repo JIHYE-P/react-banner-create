@@ -1,10 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const StyledHeader = styled.div`
-  position: fixed;
-  left: 0;
-  top: 0;
+const StyledHeader = styled.header`
   width: 100%;
   padding: 20px;
   display: flex;
