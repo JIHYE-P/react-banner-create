@@ -9,6 +9,7 @@ import ColorPicker from './components/ColorPicker';
 import { faFillDrip, faFont } from '@fortawesome/free-solid-svg-icons'
 import { ChromePicker } from 'react-color'
 import { randomHexColor, getContrast } from './utils';
+import Header from './components/Header';
 
 const StyledBannerSizeField = styled.div`
   text-align: center;
@@ -78,6 +79,7 @@ const App = () => {
 
   const placeholder = 'typing text here :)'
   return <section style={{textAlign: 'center'}}>
+    <Header></Header>
     <StyledBannerSizeField>
       <SizeField sizeValue={sizeValue} onChange={handleSizeChange} />
     </StyledBannerSizeField>
