@@ -1,18 +1,16 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { setCanvasText, drawCanvasImage } from '../utils'
 
-const Preview = ({width, height, backgroundColor, text, fontTheme, href, updatePreview, bgImageSrc}) => {
+const Preview = ({size, text, fontTheme, backgroundColor, imageSrc, href, updatePreview}) => {
   const canvasRef = useRef(null)
-  const [bgImage, setBgImage] = useState(null);
+  const [isImage, setIsImage] = useState(null);
 
   useEffect(() => {
-    if (!bgImageSrc) return;
+    if (!imageSrc) return;
     const img = new Image
-    img.onload = () => {
-      setBgImage(img)
-    }
-    img.src = bgImageSrc
-  }, [bgImageSrc]);
+    img.onload = () => setIsImage(img)
+    img.src = imageSrc
+  }, [imageSrc]);
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -21,7 +19,8 @@ const Preview = ({width, height, backgroundColor, text, fontTheme, href, updateP
       ctx.fillStyle = backgroundColor
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      if (bgImage) drawCanvasImage(canvas, ctx, bgImage);
+      if (isImage) drawCanvasImage(canvas, ctx, isImage);
+      
       const {family, size, color} = fontTheme
       setCanvasText(canvas, text, {family: family, size: size, color: color})
 
@@ -29,9 +28,9 @@ const Preview = ({width, height, backgroundColor, text, fontTheme, href, updateP
       href !== url && updatePreview(url)
     }
     
-  }, [width, height, backgroundColor, text, fontTheme, href, updatePreview, bgImage, fontTheme, text])
+  }, [size, text, fontTheme, backgroundColor, isImage, href, updatePreview])
 
-  return <canvas ref={canvasRef} width={width} height={height}></canvas>
+  return <canvas ref={canvasRef} width={size.width} height={size.height}></canvas>
 }
 
 export default Preview

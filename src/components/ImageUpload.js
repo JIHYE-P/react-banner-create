@@ -26,30 +26,27 @@ const StyledFileInput = styled.div`
   }
 `
 
-const ImageUpload = ({updateImageSrc}) => {
+const ImageUpload = ({updateImage}) => {
   const input = useRef(null)
-  const updateImage = () => {
-    // while(preview.current.firstChild) {
-    //   preview.current.removeChild(preview.current.firstChild);
-    // }
+  const onChange = () => {
     const curFiles = input.current.files
     if(curFiles.length === 0) return
     for(const file of curFiles) {
       if(validFileType(file)) {
-        const imgSrc = URL.createObjectURL(file)
-        typeof updateImageSrc === 'function' && updateImageSrc(imgSrc)
+        const src = URL.createObjectURL(file)
+        typeof updateImage === 'function' && updateImage(src)
       }
     }
   }
   return <StyledFileInput>
-    <label htmlFor="bgImage"><FontAwesomeIcon icon={faImage} size="lg" /></label>
+    <label htmlFor="image"><FontAwesomeIcon icon={faImage} size="lg" /></label>
     <input
       ref={input}
       type="file"
-      name="bgImage"
-      id="bgImage"
+      name="image"
+      id="image"
       accept=".png, .jpeg, .jpg"
-      onChange={updateImage} 
+      onChange={onChange} 
     />
   </StyledFileInput>
 }

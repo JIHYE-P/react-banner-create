@@ -44,13 +44,13 @@ const StyledBannerDownLoad = styled.div`
 `
 
 const App = () => {
-  const [sizeValue, setSizeValue] = useState({width: '700', height: '350'})
+  const [size, setSize] = useState({width: '700', height: '350'})
   const [fontTheme, setFontTheme] = useState({family: 'Arial, sans-serif', size: '20', color: '#000'})
   const [text, setText] = useState('Sample Banner')
   const [bgColor, setBgColor] = useState({displayColorPicker: false, color: '#000000'})
   const [textColor, setTextColor] = useState({displayColorPicker: false, color: '#ffffff'})
   const [href, setHref] = useState('')
-  const [bgImage, setBgImage] = useState({state: false, src: null})
+  const [imageSrc, setImageSrc] = useState(null)
 
   useEffect(() => {
     const bgColorHex = randomHexColor()
@@ -59,7 +59,7 @@ const App = () => {
     setFontTheme({...fontTheme, color: textColorHex})
   }, [])
   const handleSizeChange = ({target}) => {
-    setSizeValue(prev => ({...prev, [target.name]: target.value}))
+    setSize(prev => ({...prev, [target.name]: target.value}))
   }  
   const handleTextChange = ({target}) => {
     setText(target.value)
@@ -87,26 +87,24 @@ const App = () => {
     setFontTheme({...fontTheme, color: color.hex})
   }
   const handleUpdatePreview = (href) => setHref(href)
-  const handleUpdateImageSrc = (src) => setBgImage({state: true, src: src})
+  const handleUpdateImage = (src) => setImageSrc(src)
 
   const placeholder = 'typing text here :)'
   return <>
     <Header></Header>
     <section style={{textAlign: 'center'}}>
       <StyledBannerSizeField>
-        <SizeField sizeValue={sizeValue} onChange={handleSizeChange} />
+        <SizeField sizeValue={size} onChange={handleSizeChange} />
       </StyledBannerSizeField>
       <StyledBannerPreview>
         <Preview
-          width={sizeValue.width}
-          height={sizeValue.height}
+          size={size}
           backgroundColor={bgColor.color}
           text={text}
           fontTheme={fontTheme} 
           href={href}
           updatePreview={handleUpdatePreview}
-          bgImage={bgImage.state}
-          bgImageSrc={bgImage.src}
+          imageSrc={imageSrc}
         />
       </StyledBannerPreview>
       <StyledBannerTextField>
@@ -137,7 +135,7 @@ const App = () => {
           displayColorPicker={textColor.displayColorPicker}
           colorPicker={<ChromePicker color={textColor.color} onChange={handleTextColor} disableAlpha={true} />}
         />
-        <ImageUpload updateImageSrc={handleUpdateImageSrc} />
+        <ImageUpload updateImage={handleUpdateImage} />
 
       </StyledColorEditor>
       <StyledBannerDownLoad>
