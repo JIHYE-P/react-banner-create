@@ -33,7 +33,7 @@ const FontEditor = ({onChange}) => {
       <Select name="family" onChange={onChange}>
         {
           fontFamilyList.map((family, index) => {
-            const name = family.split(',')
+            // const name = family.split(',')
             return (<option value={family} key={`family-${index}`}>{family}</option>)
           })
         }

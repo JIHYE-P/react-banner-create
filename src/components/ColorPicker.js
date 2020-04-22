@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ChromePicker } from 'react-color'
 
 const StyledSvg = styled.span`
   display: block;
@@ -44,16 +45,20 @@ const StyledColorCover = styled.div`
   bottom: 0;
 `
 
-const ColorPicker = ({onOpen, onClose, color, icon, displayColorPicker, colorPicker }) => {
+const ColorPicker = ({onOpen, onClose, color, icon, isDisplay, onChange}) => {
   return <StyledColorPickerWrap> 
     <StyledColorPicker onClick={onOpen}>
       <ColorSwatch color={color}></ColorSwatch>
       <StyledSvg><FontAwesomeIcon icon={icon} size="lg" /></StyledSvg>
     </StyledColorPicker>
-    {displayColorPicker ? <>
+    {isDisplay ? <>
       <StyledColorCover onClick={onClose}></StyledColorCover>
       <StyledColorPopover>
-        {colorPicker}
+        <ChromePicker
+          color={color}
+          onChange={(color) => onChange(color.hex)} 
+          disableAlpha={true} 
+        />
       </StyledColorPopover>
     </> : null}
   </StyledColorPickerWrap>

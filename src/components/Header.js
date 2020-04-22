@@ -8,6 +8,7 @@ const StyledHeader = styled.header`
   align-items: center;
   background-color: rgba(0,0,0,0.45);
   color: #f8f8f8;
+  margin-bottom: 40px;
   h1 {
     font-size: 18px;
     font-weight: normal;

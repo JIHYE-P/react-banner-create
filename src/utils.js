@@ -1,4 +1,4 @@
-export const setCanvasText = (canvas, text, theme) => {
+export const canvasTextDraw = (canvas, text, theme) => {
   const ctx = canvas.getContext('2d')
   const x = canvas.width/2
   const y = canvas.height/2
@@ -9,6 +9,12 @@ export const setCanvasText = (canvas, text, theme) => {
   ctx.fillStyle = color
   ctx.fillText(text, x, y)
 }
+
+export const canvasImageDraw = (canvas, img) => {
+  const ctx = canvas.getContext('2d')
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+  // ctx.globalAlpha = 0.4;
+} 
 
 export const fontFamilyList = [
   'Arial, sans-serif',
@@ -40,7 +46,3 @@ export const fileTypes = [
 
 export const validFileType = file => fileTypes.includes(file.type)
 
-export const drawCanvasImage = (canvas, ctx, img) => {
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-  ctx.globalAlpha = 0.4;
-} 

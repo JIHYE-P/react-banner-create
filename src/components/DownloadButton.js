@@ -10,10 +10,12 @@ const StyledButton = styled.a`
   line-height: 45px;
   text-align: center;
   border-radius: 3px;
-  background-color: rgb(32, 201, 151);
+  background-color: #1098ad;
   font-size: 16px;
   color: #fff;
   cursor: pointer;
+  text-decoration: none;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.35);
 `
 
 const DownloadButton = ({href}) => {

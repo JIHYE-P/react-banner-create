@@ -14,7 +14,14 @@ import { faFillDrip, faFont } from '@fortawesome/free-solid-svg-icons'
 import { ChromePicker } from 'react-color'
 
 import { randomHexColor, getContrast } from './utils';
+import PreviewCanvas from './components/PreviewCanvas';
 
+const StyledSectionWrapper = styled.div`
+  display:  flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+`
 const StyledBannerSizeField = styled.div`
   text-align: center;
   margin: 20px 0;
@@ -23,6 +30,8 @@ const StyledBannerPreview = styled.div`
   margin-bottom: 20px;
 `
 const StyledBannerTextField = styled.div`
+  width: 700px;
+  margin: 0 auto;
 `
 const StyledFontEditor = styled.div`
 `
@@ -37,107 +46,101 @@ const StyledBannerDownLoad = styled.div`
 
 const App = () => {
   const [size, setSize] = useState({width: '700', height: '350'})
-  const [fontTheme, setFontTheme] = useState({family: 'Arial, sans-serif', size: '20', color: '#000'})
+  const [fontTheme, setFontTheme] = useState({family: 'Arial, sans-serif', size: '20', color: '#ffffff'})
   const [text, setText] = useState('Sample Banner')
-  const [bgColor, setBgColor] = useState({displayColorPicker: false, color: '#000000'})
-  const [textColor, setTextColor] = useState({displayColorPicker: false, color: '#ffffff'})
+  const [background, setBackground] = useState({color: '#000000', image: false, src: ''})
   const [href, setHref] = useState('')
-  const [imageSrc, setImageSrc] = useState(null)
-
+  // const [imageSrc, setImageSrc] = useState(null)
+  const [colorPicker, setColorPicker] = useState({
+    background: {
+      isDisplay: false,
+      color: '#000000'
+    },
+    text: {
+      isDisplay: false,
+      color: '#ffffff'
+    }
+  })
   useEffect(() => {
-    const bgColorHex = randomHexColor()
-    const textColorHex = getContrast(bgColorHex)
-    setBgColor({...bgColor, color: `#${bgColorHex}`})
-    setFontTheme({...fontTheme, color: textColorHex})
-  }, [])
-  const handleSizeChange = ({target}) => {
-    setSize(prev => ({...prev, [target.name]: target.value}))
-  }  
-  const handleTextChange = ({target}) => {
-    setText(target.value)
-  }
-  const handleFontTheme = ({target}) => {
-    setFontTheme(prev => ({...prev, [target.name]: target.value}))
-  }
-  const handleBgColorOpen = () => {
-    setBgColor({...bgColor, displayColorPicker: !bgColor.displayColorPicker})
-  }
-  const handleBgColorClose = () => {
-    setBgColor({...bgColor, displayColorPicker: false})
-  }
-  const handleBgColor = (color) => {
-    setBgColor({...bgColor, color: color.hex})
-  }
-  const handleTextColorOpen = () => {
-    setTextColor({...textColor, displayColorPicker: !textColor.displayColorPicker})
-  }
-  const handleTextColorClose = () => {
-    setTextColor({...textColor, displayColorPicker: false})
-  }
-  const handleTextColor = (color) => {
-    setTextColor({...textColor, color: color.hex})
-    setFontTheme({...fontTheme, color: color.hex})
-  }
-  const handleUpdatePreview = (href) => setHref(href)
-  const handleUpdateImage = (src) => setImageSrc(src)
+    const backgroundColorHex = randomHexColor()
+    const textColorHex = getContrast(backgroundColorHex)
 
+    setBackground(prev => ({...prev, color : `#${backgroundColorHex}`}))
+    setFontTheme(prev => ({...prev, color: textColorHex}))
+    setColorPicker(prev => ({...prev, background: {...prev[background], color: `#${backgroundColorHex}`}}))
+  }, [])
+
+  const handleSizeChange = ({target}) => setSize(prev => ({...prev, [target.name]: target.value})) 
+  const handleTextChange = ({target}) => setText(target.value)
+  const handleFontTheme = ({target}) => setFontTheme(prev => ({...prev, [target.name]: target.value}))
+  const handleUpdateImage = src => setBackground({...background, image: true, src: src})
+  // const handleUpdatePreview = href => setHref(href)
+
+  const handleColorPickerOpen = type => setColorPicker(prev => ({...prev, [type]: {...prev[type], isDisplay: true}}))
+  const handleColorPickerClose = type => setColorPicker(prev => ({...prev, [type]: {...prev[type], isDisplay: false}}))
+  const handleColorPickerChange = (type, color) => {
+    setColorPicker(prev => ({...prev, [type]: {...prev[type], color: color}}))
+    
+    type === 'background' && setBackground({...background, color : color})
+    type === 'text' && setFontTheme({...fontTheme, color : color})
+  } 
+  
   const placeholder = 'typing text here :)'
   return <>
     <Header></Header>
-    <section style={{textAlign: 'center'}}>
-      <StyledBannerPreview>
-        <Preview
-          size={size}
-          backgroundColor={bgColor.color}
-          text={text}
-          fontTheme={fontTheme} 
-          href={href}
-          updatePreview={handleUpdatePreview}
-          imageSrc={imageSrc}
-        />
-      </StyledBannerPreview>
+    <StyledSectionWrapper>
+      <section style={{textAlign: 'center'}}>
+        <StyledBannerPreview>
+          <PreviewCanvas 
+            size={size}
+            text={text}
+            fontTheme={fontTheme}
+            background={background}
+          />
+        </StyledBannerPreview>
 
-      <StyledBannerTextField>
-        <TextField 
-          placeholder={placeholder}
-          onChange={handleTextChange} 
-          onFocus={({target}) => target.placeholder = ''} 
-          onBlur={({target}) => (target.value === '') && (target.placeholder = placeholder)} 
-        />
-      </StyledBannerTextField>
+        <StyledBannerTextField>
+          <TextField 
+            placeholder={placeholder}
+            onChange={handleTextChange} 
+            onFocus={({target}) => target.placeholder = ''} 
+            onBlur={({target}) => (target.value === '') && (target.placeholder = placeholder)} 
+          />
+        </StyledBannerTextField>
 
-      <StyledBannerSizeField>
-        <SizeField sizeValue={size} onChange={handleSizeChange} />
-      </StyledBannerSizeField>
+        <StyledBannerSizeField>
+          <SizeField sizeValue={size} onChange={handleSizeChange} />
+        </StyledBannerSizeField>
 
-      <StyledFontEditor>
-        <FontEditor onChange={handleFontTheme} />
-      </StyledFontEditor>
+        <StyledFontEditor>
+          <FontEditor onChange={handleFontTheme} />
+        </StyledFontEditor>
 
-      <StyledColorEditor>
-        <ColorPicker 
-          onOpen={handleBgColorOpen}
-          onClose={handleBgColorClose}
-          color={bgColor.color}
-          icon={faFillDrip}
-          displayColorPicker={bgColor.displayColorPicker}
-          colorPicker={<ChromePicker color={bgColor.color} onChange={handleBgColor} disableAlpha={true} />}
-        />
-        <ColorPicker 
-          onOpen={handleTextColorOpen}
-          onClose={handleTextColorClose}
-          color={textColor.color}
-          icon={faFont}
-          displayColorPicker={textColor.displayColorPicker}
-          colorPicker={<ChromePicker color={textColor.color} onChange={handleTextColor} disableAlpha={true} />}
-        />
-        <ImageUpload updateImage={handleUpdateImage} />
-      </StyledColorEditor>
+        <StyledColorEditor>
+          <ColorPicker 
+            icon={faFillDrip}
+            onOpen={() => handleColorPickerOpen('background')}
+            onClose={() => handleColorPickerClose('background')}
+            color={colorPicker.background.color}
+            isDisplay={colorPicker.background.isDisplay}
+            onChange={(color) => handleColorPickerChange('background', color)}
+          />
+          <ColorPicker 
+            icon={faFont}
+            onOpen={() => handleColorPickerOpen('text')}
+            onClose={() => handleColorPickerClose('text')}
+            color={colorPicker.text.color}
+            isDisplay={colorPicker.text.isDisplay}
+            onChange={(color) => handleColorPickerChange('text', color)}
+          />
+          <ImageUpload updateImage={handleUpdateImage} />
+        </StyledColorEditor>
 
-      <StyledBannerDownLoad>
-        <DownloadButton href={href} />
-      </StyledBannerDownLoad>
-    </section>
+        <StyledBannerDownLoad>
+          <DownloadButton href={href} />
+        </StyledBannerDownLoad>
+      </section>
+    </StyledSectionWrapper>
   </>
 }
 
