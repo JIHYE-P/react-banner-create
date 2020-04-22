@@ -47,6 +47,7 @@ const App = () => {
   const [size, setSize] = useState({width: '700', height: '350'})
   const [fontTheme, setFontTheme] = useState({family: 'Arial, sans-serif', size: '20', color: '#ffffff'})
   const [background, setBackground] = useState({color: '#000000', image: ''})
+  const [href, setHref] = useState('')
   const [colorPicker, setColorPicker] = useState({
     background: {isDisplay: false, color: '#000000'},
     text: {isDisplay: false, color: '#ffffff'}
@@ -55,7 +56,6 @@ const App = () => {
   useEffect(() => {
     const backgroundColorHex = randomHexColor()
     const textColorHex = getContrast(backgroundColorHex)
-
     setBackground(prev => ({...prev, color: `#${backgroundColorHex}`}))
     setFontTheme(prev => ({...prev, color: textColorHex}))
     setColorPicker(prev => ({...prev, background: {...prev[background], color: `#${backgroundColorHex}`}}))
@@ -65,12 +65,12 @@ const App = () => {
   const handleTextChange = ({target}) => setText(target.value)
   const handleFontTheme = ({target}) => setFontTheme(prev => ({...prev, [target.name]: target.value}))
   const handleUpdateImage = src => setBackground({...background, image: src})
-
+  
   const handleColorPickerOpen = type => setColorPicker(prev => ({...prev, [type]: {...prev[type], isDisplay: true}}))
   const handleColorPickerClose = type => setColorPicker(prev => ({...prev, [type]: {...prev[type], isDisplay: false}}))
   const handleColorPickerChange = (type, color) => {
     setColorPicker(prev => ({...prev, [type]: {...prev[type], color: color}}))
-    type === 'background' && setBackground({...background, color: color})
+    type === 'background' && setBackground({color: color, image: ''})
     type === 'text' && setFontTheme({...fontTheme, color : color})
   } 
   
@@ -85,6 +85,8 @@ const App = () => {
             text={text}
             fontTheme={fontTheme}
             background={background}
+            href={href}
+            updatePreview={(href) => setHref(href)}
           />
         </StyledBannerPreview>
 
@@ -125,9 +127,9 @@ const App = () => {
           <ImageUpload updateImage={handleUpdateImage} />
         </StyledColorEditor>
 
-        {/* <StyledBannerDownLoad>
+        <StyledBannerDownLoad>
           <DownloadButton href={href} />
-        </StyledBannerDownLoad> */}
+        </StyledBannerDownLoad>
       </section>
     </StyledSectionWrapper>
   </>

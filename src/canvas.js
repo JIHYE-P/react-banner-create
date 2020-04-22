@@ -7,10 +7,19 @@ export class Canvas {
     fontFamily,
     fontSize,
     fontColor,
-    backagroundColor,
-    backgroundImage 
+    backagroundColor = '#000000',
+    backgroundImage = '',
   } = {}){
-    Object.assign(this, {canvas, size, text, fontFamily, fontSize, fontColor, backagroundColor, backgroundImage}) 
+    Object.assign(this, {
+      canvas,
+      size,
+      text,
+      fontFamily,
+      fontSize,
+      fontColor,
+      backagroundColor,
+      backgroundImage,
+    }) 
   }
 
   loadImage(src){
@@ -36,19 +45,16 @@ export class Canvas {
     }
     Object.assign(this, {canvas, size, text, fontFamily, fontSize, fontColor, backagroundColor, backgroundImage}) 
   }
-  
 
   render(){
-    const canvas = this.current
+    const canvas = this.canvas
     const ctx = canvas.getContext('2d')
-    
     if(this.image) ctx.drawImage(this.image, 0, 0, canvas.width, canvas.height)
-    
-    ctx.fillStyle = this.backagroundColor
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    else {
+      ctx.fillStyle = this.backagroundColor
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
     
     canvasTextDraw(canvas, this.text, this.fontFamily, this.fontSize, this.fontColor)
   }
 }
-// const url = canvas.toDataURL()
-// this.href = url
