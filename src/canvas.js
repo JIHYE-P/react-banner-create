@@ -1,32 +1,42 @@
-import { canvasTextDraw, canvasImageDraw } from "./utils"
-
+import {canvasTextDraw} from './utils'
 export class Canvas {
-  constructor({
+
+  async update({
     canvas,
     size, 
-    text, 
-    fontTheme = {family: 'Arial, sans-serif', size: '20', color: '#000000'}, 
-    background = {color: '#000000', image: false, src: ''}
-  }) {
-    Object.assign(this, {canvas, size, text, fontTheme, background})
+    text,
+    fontFamily,
+    fontSize,
+    fontColor,
+    backagroundColor,
+    backgroundImage 
+  }){
+    if(this.backgroundImage !== backgroundImage) {
+      this.image = await this.loadImage(backgroundImage).catch(console.error)
+    }
+    Object.assign(this, {canvas, size, text, fontFamily, fontSize, fontColor, backagroundColor, backgroundImage}) 
+  }
+  
+  loadImage(src){
+    return new Promise((res) => {
+      const img = new Image()
+      img.onload = () => res(img)
+      img.src = src
+    })
   }
 
   render(){
     const canvas = this.canvas
-
-      const ctx = canvas.getContext('2d')
-      ctx.fillStyle = this.background.color
+    const ctx = canvas.getContext('2d')
+ 
+    if(this.image) {
+      ctx.drawImage(this.image, 0, 0, canvas.width, canvas.height)
+    }else{
+      ctx.fillStyle = this.backagroundColor
       ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-      if(this.background.src) return
-      const img = new Image()
-      img.onload = () => this.background.image = true
-      img.src = this.background.src
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-      
-      // this.background.image && canvasImageDraw(canvas, img)
-      // this.background.image = false
-
-      canvasTextDraw(canvas, this.text, this.fontTheme)
     }
+    canvasTextDraw(canvas, this.text, this.fontFamily, this.fontSize, this.fontColor)
+  }
 }
+// const url = canvas.toDataURL()
+// this.href = url

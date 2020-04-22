@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import styled from 'styled-components';
+import Header from './components/Header';
 import SizeField from './components/SizeField'
-import Preview from './components/Preview';
+import PreviewCanvas from './components/PreviewCanvas';
 import TextField from './components/TextField';
 import FontEditor from './components/FontEditor';
 import ColorPicker from './components/ColorPicker';
 import ImageUpload from './components/ImageUpload';
-import Header from './components/Header';
 import DownloadButton from './components/DownloadButton';
 
 import { faFillDrip, faFont } from '@fortawesome/free-solid-svg-icons'
-import { ChromePicker } from 'react-color'
 
 import { randomHexColor, getContrast } from './utils';
-import PreviewCanvas from './components/PreviewCanvas';
 
 const StyledSectionWrapper = styled.div`
   display:  flex;
@@ -36,7 +34,7 @@ const StyledBannerTextField = styled.div`
 const StyledFontEditor = styled.div`
 `
 const StyledColorEditor = styled.div`
-  margin: 20px 0;
+  margin: 20px 0 35px;
   > div {
     margin: 0 10px;
   }
@@ -45,27 +43,20 @@ const StyledBannerDownLoad = styled.div`
 `
 
 const App = () => {
+  const [text, setText] = useState('Sample Banner')
   const [size, setSize] = useState({width: '700', height: '350'})
   const [fontTheme, setFontTheme] = useState({family: 'Arial, sans-serif', size: '20', color: '#ffffff'})
-  const [text, setText] = useState('Sample Banner')
-  const [background, setBackground] = useState({color: '#000000', image: false, src: ''})
-  const [href, setHref] = useState('')
-  // const [imageSrc, setImageSrc] = useState(null)
+  const [background, setBackground] = useState({color: '#000000', image: ''})
   const [colorPicker, setColorPicker] = useState({
-    background: {
-      isDisplay: false,
-      color: '#000000'
-    },
-    text: {
-      isDisplay: false,
-      color: '#ffffff'
-    }
+    background: {isDisplay: false, color: '#000000'},
+    text: {isDisplay: false, color: '#ffffff'}
   })
+
   useEffect(() => {
     const backgroundColorHex = randomHexColor()
     const textColorHex = getContrast(backgroundColorHex)
 
-    setBackground(prev => ({...prev, color : `#${backgroundColorHex}`}))
+    setBackground(prev => ({...prev, color: `#${backgroundColorHex}`}))
     setFontTheme(prev => ({...prev, color: textColorHex}))
     setColorPicker(prev => ({...prev, background: {...prev[background], color: `#${backgroundColorHex}`}}))
   }, [])
@@ -73,15 +64,13 @@ const App = () => {
   const handleSizeChange = ({target}) => setSize(prev => ({...prev, [target.name]: target.value})) 
   const handleTextChange = ({target}) => setText(target.value)
   const handleFontTheme = ({target}) => setFontTheme(prev => ({...prev, [target.name]: target.value}))
-  const handleUpdateImage = src => setBackground({...background, image: true, src: src})
-  // const handleUpdatePreview = href => setHref(href)
+  const handleUpdateImage = src => setBackground({...background, image: src})
 
   const handleColorPickerOpen = type => setColorPicker(prev => ({...prev, [type]: {...prev[type], isDisplay: true}}))
   const handleColorPickerClose = type => setColorPicker(prev => ({...prev, [type]: {...prev[type], isDisplay: false}}))
   const handleColorPickerChange = (type, color) => {
     setColorPicker(prev => ({...prev, [type]: {...prev[type], color: color}}))
-    
-    type === 'background' && setBackground({...background, color : color})
+    type === 'background' && setBackground({...background, color: color})
     type === 'text' && setFontTheme({...fontTheme, color : color})
   } 
   
@@ -136,9 +125,9 @@ const App = () => {
           <ImageUpload updateImage={handleUpdateImage} />
         </StyledColorEditor>
 
-        <StyledBannerDownLoad>
+        {/* <StyledBannerDownLoad>
           <DownloadButton href={href} />
-        </StyledBannerDownLoad>
+        </StyledBannerDownLoad> */}
       </section>
     </StyledSectionWrapper>
   </>
