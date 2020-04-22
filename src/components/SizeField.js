@@ -7,6 +7,7 @@ const StyledFormControl = styled.div`
   margin: 0 10px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.35);
   span {
+    width: 100px;
     display: inline-block;
     padding: 11px 15px;
     height: 40px;
@@ -17,6 +18,7 @@ const StyledFormControl = styled.div`
     border-radius: 5px 0 0 5px;
   }
   input {
+    width: 205px;
     vertical-align: middle;
     border-radius: 0 5px 5px 0;
   }

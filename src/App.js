@@ -17,30 +17,22 @@ import { randomHexColor, getContrast } from './utils';
 
 const StyledBannerSizeField = styled.div`
   text-align: center;
+  margin: 20px 0;
 `
 const StyledBannerPreview = styled.div`
-  margin: 20px auto 30px;
+  margin-bottom: 20px;
 `
 const StyledBannerTextField = styled.div`
-  width: 500px;
-  margin: 0 auto;
 `
 const StyledFontEditor = styled.div`
-  margin: 40px 0;
-  text-align: center;
-  select {
-    width: 210px;
-  }
 `
 const StyledColorEditor = styled.div`
-  position: relative;
-  display: inline-block;
+  margin: 20px 0;
   > div {
-    margin: 0 20px;
+    margin: 0 10px;
   }
 `
 const StyledBannerDownLoad = styled.div`
-  margin-top: 30px;
 `
 
 const App = () => {
@@ -93,9 +85,6 @@ const App = () => {
   return <>
     <Header></Header>
     <section style={{textAlign: 'center'}}>
-      <StyledBannerSizeField>
-        <SizeField sizeValue={size} onChange={handleSizeChange} />
-      </StyledBannerSizeField>
       <StyledBannerPreview>
         <Preview
           size={size}
@@ -107,6 +96,7 @@ const App = () => {
           imageSrc={imageSrc}
         />
       </StyledBannerPreview>
+
       <StyledBannerTextField>
         <TextField 
           placeholder={placeholder}
@@ -115,9 +105,15 @@ const App = () => {
           onBlur={({target}) => (target.value === '') && (target.placeholder = placeholder)} 
         />
       </StyledBannerTextField>
+
+      <StyledBannerSizeField>
+        <SizeField sizeValue={size} onChange={handleSizeChange} />
+      </StyledBannerSizeField>
+
       <StyledFontEditor>
         <FontEditor onChange={handleFontTheme} />
       </StyledFontEditor>
+
       <StyledColorEditor>
         <ColorPicker 
           onOpen={handleBgColorOpen}
@@ -136,8 +132,8 @@ const App = () => {
           colorPicker={<ChromePicker color={textColor.color} onChange={handleTextColor} disableAlpha={true} />}
         />
         <ImageUpload updateImage={handleUpdateImage} />
-
       </StyledColorEditor>
+
       <StyledBannerDownLoad>
         <DownloadButton href={href} />
       </StyledBannerDownLoad>

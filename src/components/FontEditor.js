@@ -4,20 +4,32 @@ import Select from './Select';
 import { fontFamilyList, fontSizeList } from '../utils';
 
 const StyledSelector = styled.div`
-  span {
-    display: block;
-    margin-bottom: 8px;
-    text-align: left;
-    color: #f8f8f8;
-  }
   display: inline-block;
   margin: 0 10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.35);
+  span {
+    width: 100px;
+    display: inline-block;
+    padding: 11px 15px;
+    height: 40px;
+    font-size: 15px;
+    color: #333;
+    vertical-align: middle;
+    background-color: #eee;
+    border-radius: 5px 0 0 5px;
+  }
+  select {
+    width: 205px;
+    vertical-align: middle;
+    height: 40px;
+    border-radius: 0 5px 5px 0;
+  }
 `
 
 const FontEditor = ({onChange}) => {
   return <>
     <StyledSelector>
-      <span>Font Family</span>
+      <span>font family</span>
       <Select name="family" onChange={onChange}>
         {
           fontFamilyList.map((family, index) => {
@@ -28,7 +40,7 @@ const FontEditor = ({onChange}) => {
       </Select>
     </StyledSelector>
     <StyledSelector>
-      <span>Font Size</span>
+      <span>font size</span>
       <Select name="size" onChange={onChange}>
         {
           fontSizeList.map((size, index) => {
