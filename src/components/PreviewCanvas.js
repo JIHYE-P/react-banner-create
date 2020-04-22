@@ -2,9 +2,9 @@ import React, { useRef, useEffect } from 'react'
 import { Canvas } from '../canvas'
 
 const canvasInstance = new Canvas()
+
 const PreviewCanvas = ({size, text, fontTheme, background}) => {
   const canvasRef = useRef(null)
-  
   useEffect(() => {    
     (async () => {
       await canvasInstance.update({
